@@ -1,45 +1,52 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Image, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Tabs } from "expo-router";
+import Feather from "@expo/vector-icons/Feather";
+import Colors from "@/data/Colors";
+import { AuthProvider, useAuth } from "@/Context/Auth.Context";
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+export default function RootLayout() {
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const {user} = useAuth();
+  console.log(user)
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
+  
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: Colors.PRIMARY,
+          tabBarStyle: {
+            backgroundColor: Colors.BACKGROUND,
           },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="Home"
+          options={{
+            tabBarIcon: ({ color, size }) => {
+              return <Feather name="home" size={size} color={color} />;
+            },
+          }}
+        />
+        <Tabs.Screen name="Events" options={{
+            tabBarIcon: ({ color, size }) => {
+              return <Feather name="calendar" size={size} color={color} />;
+            },
+          }}/>
+        <Tabs.Screen name="Clubs" options={{
+            tabBarIcon: ({ color, size }) => {
+              return <Feather name="users" size={size} color={color} />;
+            },
+          }}/>
+        <Tabs.Screen name="Profile" options={{
+            tabBarIcon: ({ size, color }) => {
+              return <Feather name="user" size={size} color={color} />
+            },
+          }}/>
+      </Tabs>
+    
   );
 }
+
+const styles = StyleSheet.create({});
